@@ -7,6 +7,9 @@
 
 class SimpleSystem {
  public:
+  static constexpr uint32_t kRAM_BaseAddr  = 0x1000000u;
+  static constexpr uint32_t kRAM_SizeBytes = 0x1000000u;
+
   SimpleSystem(const char *ram_hier_path, int ram_size_words);
   virtual ~SimpleSystem() {}
   virtual int Main(int argc, char **argv);

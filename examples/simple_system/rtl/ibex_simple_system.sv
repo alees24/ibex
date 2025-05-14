@@ -99,12 +99,12 @@ module ibex_simple_system (
   // Device address mapping
   logic [31:0] cfg_device_addr_base [NrDevices];
   logic [31:0] cfg_device_addr_mask [NrDevices];
-  assign cfg_device_addr_base[Ram] = 32'h100000;
-  assign cfg_device_addr_mask[Ram] = ~32'hFFFFF; // 1 MB
+  assign cfg_device_addr_base[Ram] = 32'h1000000;
+  assign cfg_device_addr_mask[Ram] = ~32'hFFFFFF; // 16 MiB
   assign cfg_device_addr_base[SimCtrl] = 32'h20000;
-  assign cfg_device_addr_mask[SimCtrl] = ~32'h3FF; // 1 kB
+  assign cfg_device_addr_mask[SimCtrl] = ~32'h3FF; // 1 KiB
   assign cfg_device_addr_base[Timer] = 32'h30000;
-  assign cfg_device_addr_mask[Timer] = ~32'h3FF; // 1 kB
+  assign cfg_device_addr_mask[Timer] = ~32'h3FF; // 1 KiB
 
   // Instruction fetch signals
   logic instr_req;
@@ -217,8 +217,8 @@ module ibex_simple_system (
       .ram_cfg_i              (prim_ram_1p_pkg::RAM_1P_CFG_DEFAULT),
 
       .hart_id_i              (32'b0),
-      // First instruction executed is at 0x0 + 0x80
-      .boot_addr_i            (32'h00100000),
+      // First instruction executed is at 0x0100_0000 + 0x80
+      .boot_addr_i            (32'h0100_0000),
 
       .instr_req_o            (instr_req),
       .instr_gnt_i            (instr_gnt),
@@ -264,7 +264,7 @@ module ibex_simple_system (
 
   // SRAM block for instruction and data storage
   ram_2p #(
-      .Depth(1024*1024/4),
+      .Depth(16*1024*1024/4),
       .MemInitFile(SRAMInitFile)
     ) u_ram (
       .clk_i       (clk_sys),
